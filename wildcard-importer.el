@@ -21,9 +21,15 @@
 (defvar-local wildcard-importer-alist
   '((scala-mode
      ("import scala.math.Ordering.Implicits._" . "induced collection orderings")
-     ("import scala.concurrent.duration._" . "1.seconds, comparison ops (for java.util.concurrent.TimeUnit durations.)"))
+     ("import scala.concurrent.duration._" . "1.seconds, comparison ops (for java.util.concurrent.TimeUnit durations.)")
+     ("import scala.jdk.CollectionConverters._" . ".asJava .asScala collection conversions"))
     (python-mode
-     "from collections import Counter")))
+     ("from collections import Counter" . ""))))
+
+(defconst wildcard-importer-cats-alist
+  '((scala-mode
+     ("import cats.implicits._" . "you probably want \"cats.syntax._\"")
+     ("import cats.syntax._" . ".some, .asRight, (a, b).mapN, etc"))))
 
 (defun wildcard-importer-alist-with-extensions (extensions)
   "Return `wildcard-importer-alist' with EXTENSIONS added."
@@ -61,7 +67,7 @@
                                 (buffer-substring (point-min) (point-max)))
                               import-strings))))))
     (save-excursion
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (when (re-search-forward "\"\"\"" nil t)
         (forward-sexp)
         (forward-line))
