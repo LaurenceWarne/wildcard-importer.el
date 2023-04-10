@@ -4,13 +4,15 @@
 ;; Maintainer: Laurence Warne
 ;; Version: 0.1
 ;; Homepage: https://github.com/LaurenceWarne/wildcard-importer.el
-;; Package-Requires: ((emacs "27.0"))
+;; Package-Requires: ((emacs "27.0") (dash "2.17.0"))
 
 ;;; Commentary:
 
 ;; Insert wildcard imports into your files
 
 ;;; Code:
+
+(require 'dash)
 
 (defgroup wildcard-importer nil
   "Insert wildcard imports into your files."
@@ -22,6 +24,17 @@
      ("import scala.concurrent.duration._" . "1.seconds, comparison ops (for java.util.concurrent.TimeUnit durations.)"))
     (python-mode
      "from collections import Counter")))
+
+(defun wildcard-importer-alist-with-extensions (extensions)
+  "Return `wildcard-importer-alist' with EXTENSIONS added."
+  (let ((temp wildcard-importer-alist))
+    (mapc (lambda (ext)
+            (setq temp
+                  (--map-when (eq (car it) ext)
+                              (append it (alist-get ext extensions))
+                              temp)))
+          (mapcar #'car extensions))
+    temp))
 
 (defun wildcard-importer-import ()
   "Prompt for a wildcard import appropriate for the current major mode."
