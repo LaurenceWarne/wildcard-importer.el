@@ -31,6 +31,7 @@
      ("import cats.implicits._" . "you probably want \"cats.syntax._\"")
      ("import cats.syntax._" . ".some, .asRight, (a, b).mapN, etc"))))
 
+;;;###autoload
 (defun wildcard-importer-alist-with-extensions (extensions)
   "Return `wildcard-importer-alist' with EXTENSIONS added."
   (let ((temp wildcard-importer-alist))
@@ -42,6 +43,7 @@
           (mapcar #'car extensions))
     temp))
 
+;;;###autoload
 (defun wildcard-importer-import ()
   "Prompt for a wildcard import appropriate for the current major mode."
   (interactive)
