@@ -31,6 +31,14 @@
      ("import cats.implicits._" . "you probably want \"cats.syntax._\"")
      ("import cats.syntax._" . ".some, .asRight, (a, b).mapN, etc"))))
 
+(defconst wildcard-importer-cats-strict-alist
+  '((scala-mode
+     ("import cats.syntax.functor._" . "")
+     ("import cats.syntax.traverse._" . "")
+     ("import cats.syntax.option._" . ".some")
+     ("import cats.syntax.either._" . ".asRight, .asLeft")
+     ("import cats.syntax.apply._" . ".mapN, *>"))))
+
 ;;;###autoload
 (defun wildcard-importer-alist-with-extensions (extensions)
   "Return `wildcard-importer-alist' with EXTENSIONS added."
