@@ -18,6 +18,7 @@
   "Insert wildcard imports into your files."
   :group 'applications)
 
+;;;###autoload
 (defvar-local wildcard-importer-alist
   '((scala-mode
      ("import scala.math.Ordering.Implicits._" . "induced collection orderings")
@@ -26,11 +27,13 @@
     (python-mode
      ("from collections import Counter" . ""))))
 
+;;;###autoload
 (defconst wildcard-importer-cats-alist
   '((scala-mode
      ("import cats.implicits._" . "you probably want \"cats.syntax._\"")
      ("import cats.syntax._" . ".some, .asRight, (a, b).mapN, etc"))))
 
+;;;###autoload
 (defconst wildcard-importer-cats-strict-alist
   '((scala-mode
      ("import cats.syntax.functor._" . "")
