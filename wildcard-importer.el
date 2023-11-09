@@ -37,6 +37,7 @@
 (defconst wildcard-importer-cats-strict-alist
   '((scala-mode
      ("import cats.syntax.functor._" . "")
+     ("import cats.syntax.foldable._" . ".traverse_, .sliding3")
      ("import cats.syntax.traverse._" . "")
      ("import cats.syntax.option._" . ".some")
      ("import cats.syntax.either._" . ".asRight, .asLeft")
