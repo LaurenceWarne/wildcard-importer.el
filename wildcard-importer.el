@@ -44,6 +44,16 @@
      ("import cats.syntax.apply._" . ".mapN, *>"))))
 
 ;;;###autoload
+(defconst wildcard-importer-scala3-cats-strict-alist
+  '((scala-mode
+     ("import cats.syntax.functor.*" . "")
+     ("import cats.syntax.foldable.*" . ".traverse_, .sliding3")
+     ("import cats.syntax.traverse.*" . "")
+     ("import cats.syntax.option.*" . ".some")
+     ("import cats.syntax.either.*" . ".asRight, .asLeft")
+     ("import cats.syntax.apply.*" . ".mapN, *>"))))
+
+;;;###autoload
 (defun wildcard-importer-alist-with-extensions (extensions)
   "Return `wildcard-importer-alist' with EXTENSIONS added."
   (let ((temp wildcard-importer-alist))
