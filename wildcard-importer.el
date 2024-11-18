@@ -46,6 +46,7 @@
 ;;;###autoload
 (defconst wildcard-importer-scala3-cats-strict-alist
   '((scala-mode
+     ("import scala.concurrent.ExecutionContext.Implicits.*" . "")
      ("import cats.syntax.functor.*" . "")
      ("import cats.syntax.foldable.*" . ".traverse_, .sliding3")
      ("import cats.syntax.traverse.*" . "")
@@ -91,18 +92,20 @@
                                 (buffer-substring (point-min) (point-max)))
                               import-strings))))))
     (save-excursion
-      (goto-char (point-min))
-      (when (re-search-forward "\"\"\"" nil t)
-        (forward-sexp)
-        (forward-line))
-      (while (re-search-forward (rx point (or (seq "package" (* nonl) eol)
-                                              (seq "import" (* nonl) eol)
-                                              eol)) nil t)
-        (forward-line)
-        (beginning-of-line))
-      (forward-line -1)
-      (unless (string= (thing-at-point 'line) "\n")
-        (forward-line 1))
+      (goto-char (point-max))
+      ;; Try to find the last import statement, else goto beginning of buffer
+      ;; and try to skip past package decs and comments.
+      (if (re-search-backward (rx bol "import") nil t)
+          (progn (when (< 0 (car (syntax-ppss))) (up-list)) (forward-line))
+        (goto-char (point-min))
+        (when (re-search-forward "\"\"\"" nil t)
+          (forward-sexp)
+          (forward-line))
+        (while (re-search-forward (rx point (or (seq "package" (* nonl) eol))) nil t)
+          (forward-line)
+          (beginning-of-line))
+        (when (< 0 (car (syntax-ppss))) (up-list))
+        (insert "\n"))
       (insert choice "\n"))))
 
 (provide 'wildcard-importer)
